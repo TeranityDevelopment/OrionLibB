@@ -1,5 +1,7 @@
 package net.teranity.lib;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import lombok.Getter;
 import lombok.Setter;
 import net.teranity.lib.query.QueryGet;
@@ -23,6 +25,21 @@ public class OrionLib {
 
     public OrionLib() {
         connections = new HashMap<>();
+    }
+
+    public OrionLib connect(String username, String password, String database, String host, int port, boolean ssl) throws SQLException {
+        HikariDataSource hikariDataSource;
+
+        HikariConfig hikariConfig = new HikariConfig();
+        hikariConfig.setJdbcUrl("jdbc:mysql://" + host + ":" + port + "/" + database);
+        hikariConfig.setUsername(username);
+        hikariConfig.setPassword(password);
+        hikariConfig.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        hikariConfig.addDataSourceProperty("useSSL", ssl);
+
+        hikariDataSource = new HikariDataSource(hikariConfig);
+        getConnections().put(database, hikariDataSource.getConnection());
+        return this;
     }
 
     public OrionLib select(OrionTable orionTable, String query, SelectCall callback, List<Object> objects) {
