@@ -12,20 +12,14 @@ import java.util.List;
 
 @AllArgsConstructor
 @Getter
-public class QueryGet extends QuerySetup {
+public class QueryGet<T> extends QuerySetup {
     private OrionTable orionTable;
     private String query;
     private SelectCall callback;
     private List<Object> objects;
 
-    public QueryGet(String query, SelectCall callback, List<Object> objects) {
-        this.query = query;
-        this.callback = callback;
-        this.objects = objects;
-    }
-
     @Override
-    public Class<?> setup() throws OrionException {
+    public void setup() throws OrionException {
         try (PreparedStatement statement = orionTable.getConnection().prepareStatement(query)) {
             for (int i = 0; i < objects.size(); i++) {
                 statement.setObject((i + 1), objects.get(i));
@@ -34,7 +28,5 @@ public class QueryGet extends QuerySetup {
         }catch (SQLException e) {
             throw new OrionException();
         }
-
-        return this.getClass();
     }
 }

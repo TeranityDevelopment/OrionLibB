@@ -4,6 +4,7 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.Getter;
 import lombok.Setter;
+import net.teranity.lib.query.QueryExecute;
 import net.teranity.lib.query.QueryGet;
 
 import java.sql.Connection;
@@ -42,9 +43,30 @@ public class OrionLib {
         return this;
     }
 
-    public OrionLib select(OrionTable orionTable, String query, SelectCall callback, List<Object> objects) {
-        new QueryGet(orionTable, query, callback, objects);
-        return this;
+    public <T> QueryGet<T> select(OrionTable orionTable, String query, SelectCall callback, List<Object> objects) {
+        try {
+            QueryGet queryGet = new QueryGet<>(orionTable, query, callback, objects);
+            queryGet.setup();
+
+            return queryGet;
+        } catch (OrionException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public QueryExecute execute(OrionTable orionTable, String query, List<Object> objects) {
+        try {
+            QueryExecute queryExecute = new QueryExecute(orionTable, query, objects);
+            queryExecute.setup();;
+
+            return queryExecute;
+        }catch (OrionException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     public OrionLib createTable(Connection connection, String tableName, String... objects) {

@@ -17,7 +17,7 @@ public class QueryExecute extends QuerySetup {
     private List<Object> objects;
 
     @Override
-    public Class<?> setup() throws OrionException {
+    public void setup() throws OrionException {
         try (PreparedStatement statement = orionTable.getConnection().prepareStatement(query)) {
             for (int i = 0; i < objects.size(); i++) {
                 statement.setObject((i + 1), objects.get(i));
@@ -27,6 +27,5 @@ public class QueryExecute extends QuerySetup {
             throw new OrionException();
         }
 
-        return this.getClass();
     }
 }

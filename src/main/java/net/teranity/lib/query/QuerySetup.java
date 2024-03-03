@@ -12,5 +12,5 @@ public abstract class QuerySetup {
         }
     }
 
-    public abstract Class<?> setup() throws OrionException;
+    public abstract void setup() throws OrionException;
 }
