@@ -43,9 +43,9 @@ public class OrionLib {
         return this;
     }
 
-    public <T> QueryGet<T> select(OrionTable orionTable, String query, SelectCall callback, List<Object> objects) {
+    public QueryGet select(Connection connection, String query, SelectCall callback, List<Object> objects) {
         try {
-            QueryGet queryGet = new QueryGet<>(orionTable, query, callback, objects);
+            QueryGet queryGet = new QueryGet(connection, query, callback, objects);
             queryGet.setup();
 
             return queryGet;
@@ -56,9 +56,9 @@ public class OrionLib {
         return null;
     }
 
-    public QueryExecute execute(OrionTable orionTable, String query, List<Object> objects) {
+    public QueryExecute execute(Connection connection, String query, List<Object> objects) {
         try {
-            QueryExecute queryExecute = new QueryExecute(orionTable, query, objects);
+            QueryExecute queryExecute = new QueryExecute(connection, query, objects);
             queryExecute.setup();;
 
             return queryExecute;
@@ -81,12 +81,6 @@ public class OrionLib {
         }
 
         return this;
-    }
-
-    public OrionTable getTable(String tableName, Connection connection) {
-        if (!tExists(tableName, connection)) return null;
-
-        return new OrionTable(tableName, connection);
     }
 
     public Connection getConnection(String databaseName) {
