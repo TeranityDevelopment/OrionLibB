@@ -1,13 +1,9 @@
 package net.teranity.test;
 
 import net.teranity.lib.OrionLib;
-import net.teranity.lib.OrionTable;
-import net.teranity.lib.query.QueryGet;
 
 import java.sql.SQLException;
 import java.util.Arrays;
-import java.util.UUID;
-import java.util.function.Supplier;
 
 public class Test {
 
@@ -17,7 +13,6 @@ public class Test {
          }
 
          OrionLib orionLib = OrionLib.getInstance();
-         OrionTable orionTable = orionLib.getTable("users", orionLib.getConnection("spcapi"));
 
          orionLib.select(null, "select * from users where uuid = ?", resultSet -> {
              try {
